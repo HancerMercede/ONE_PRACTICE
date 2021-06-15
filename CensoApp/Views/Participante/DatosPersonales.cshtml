@@ -1,0 +1,49 @@
+﻿@model CensoApp.Dtos.ParticipanteCreateDto
+@{
+    ViewData["Title"] = "Datos Personales";
+}
+<div class="container">
+    <h1 class="card-title">@ViewData["Title"]</h1>
+    <h4 class="card-subtitle">Por favor ingresar sus datos personales.</h4>
+    <br />
+    <form class="form-row" asp-action="SaveInformation" method="post" enctype="multipart/form-data">
+        <div class="form-group col-md-6">
+            <input class="form-control" asp-for="Nombre" placeholder="Nombre(s)..." />
+            <span asp-validation-for="Nombre"></span>
+        </div>
+        <div class="form-group col-md-6">
+            <input class="form-control" asp-for="Apellido" placeholder="Apellido(s)..." />
+            <span asp-validation-for="Apellido"></span>
+        </div>
+        <div class="form-group col-md-6">
+            <input class="form-control" asp-for="TipoCredencial" placeholder="Tipo credencial..." readonly />
+            <span asp-validation-for="TipoCredencial"></span>
+        </div>
+        <div class="form-group col-md-6">
+            <input class="form-control" asp-for="Credencial" placeholder="Credencial..." readonly />
+            <span asp-validation-for="Credencial"></span>
+        </div>
+        <div class="form-group col-md-6">
+            <input class="form-control" asp-for="Email" placeholder="Correo electronico..." />
+            <span asp-validation-for="Email"></span>
+        </div>
+        <div class="form-group col-md-6">
+            <input class="form-control" asp-for="FechaNacimiento" type="date" placeholder="Fecha de nacimiento..."capture="@ViewBag.edad"/>
+            <span asp-validation-for="FechaNacimiento"></span>
+        </div>
+        <div class="form-group col-md-6">
+            <input class="form-control" asp-for="Edad" type="number" readonly />
+        </div>
+        <div class="form-group col-md-6">
+            <input class="form-control" asp-for="Direccion" placeholder="Direccion: Calle/Sector/Municipio..." />
+        </div>
+        <div class="form-group col-md-6">
+            <input class="form-control" asp-for="Telefono" type="tel" placeholder="Telefono..." />
+        </div>
+        <div class="form-group">
+            <button class="btn btn-primary btn-lg btn-block" type="submit">Siguiente</button>
+        </div>
+    </form>  
+</div>
+
+
