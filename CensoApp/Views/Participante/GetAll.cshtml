@@ -1,0 +1,52 @@
+﻿@model IEnumerable<CensoApp.Dtos.ParticipanteDto>
+
+@{
+    ViewData["Title"] = "List all";
+}
+<div class="container">
+    <h1 class="card-title">@ViewData["Title"]</h1>
+ <br />
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    <label class="col-form-label">Nombres y Apellidos</label>
+                </th>
+                <th>
+                    <label class="col-form-label">Nivel academico</label>
+                </th>
+                <th>
+                   <label class="col-form-label">Cargo pre-asignado</label>
+                </th>
+                <th>
+                    <label class="col-form-label">Fecha solicitud</label>
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Nombre)  @Html.DisplayFor(modelItem => item.Apellido)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.NivelAcademico)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.CargoPreasignado)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.FechaSolicitud)
+                    </td>
+                    <td>
+                        <a class="btn btn-primary" asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                        <a class="btn btn-danger" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+

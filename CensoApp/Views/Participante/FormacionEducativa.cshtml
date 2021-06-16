@@ -6,7 +6,7 @@
     <h1 class="card-title">@ViewData["Title"]</h1>
     <form asp-action="GuardarInformacionParticipante" method="post" enctype="multipart/form-data">
         <div class="form-group">
-            <select class="form-control">
+            <select class="form-control" asp-for="NivelAcademico">
                 Formacion
                 <option value="Bachiller">Bachiller</option>
                 <option value="Universitario">Universitario</option>
@@ -42,7 +42,7 @@
             <span asp-validation-for="Email"></span>
         </div>
         <div class="form-group ">
-            <input class="form-control" asp-for="FechaNacimiento" type="date" placeholder="Fecha de nacimiento..." hidden />
+            <input class="form-control" asp-for="FechaNacimiento" type="datetime" hidden />
             <span asp-validation-for="FechaNacimiento"></span>
         </div>
         <div class="form-group ">
@@ -55,7 +55,7 @@
             <input class="form-control" asp-for="Telefono" type="tel" placeholder="Telefono..."hidden />
         </div>
         <div class="form-group">
-            <button type="submit" class="btn btn-success">Guardar y Finzalizar</button>
+            <button type="submit" class="btn btn-primary">Guardar y Finzalizar</button>
         </div>
     </form>
 </div>

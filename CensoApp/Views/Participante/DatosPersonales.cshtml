@@ -28,7 +28,7 @@
             <span asp-validation-for="Email"></span>
         </div>
         <div class="form-group col-md-6">
-            <input class="form-control" asp-for="FechaNacimiento" type="date" placeholder="Fecha de nacimiento..."capture="@ViewBag.edad"/>
+            <input class="form-control" asp-for="FechaNacimiento" type="datetime" />
             <span asp-validation-for="FechaNacimiento"></span>
         </div>
         <div class="form-group col-md-6">
@@ -41,9 +41,9 @@
             <input class="form-control" asp-for="Telefono" type="tel" placeholder="Telefono..." />
         </div>
         <div class="form-group">
-            <button class="btn btn-primary btn-lg btn-block" type="submit">Siguiente</button>
+            <button class="btn btn-primary" type="submit">Siguiente</button>
         </div>
-    </form>  
+    </form>
 </div>
 
 

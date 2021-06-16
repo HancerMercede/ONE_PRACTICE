@@ -1,16 +1,13 @@
 ﻿using CensoApp.Entities.Helpers;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace CensoApp.Entities
+namespace CensoApp.Dtos
 {
-    [Index(nameof(Credencial),IsUnique=true)]
-    public class Participante
+    public class ParticipanteDto
     {
         [Required]
         public int Id { get; set; }
@@ -30,7 +27,7 @@ namespace CensoApp.Entities
         public string Credencial { get; set; }
         [Required]
         [Phone]
-        [RegularExpression("(^[0-9]+$)",ErrorMessage="Can be just numbers")]
+        [RegularExpression("(^[0-9]+$)", ErrorMessage = "Can be just numbers")]
         public string Telefono { get; set; }
         [EmailAddress]
         public string Email { get; set; }

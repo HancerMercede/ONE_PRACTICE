@@ -13,6 +13,8 @@ namespace CensoApp.AutoMapperConfiguration
         public AutoMapperConfig()
         {
             CreateMap<ParticipanteCreateDto, Participante>();
+            CreateMap<Participante, ParticipanteDto>().ReverseMap();
+            CreateMap<ParticipanteUpdateDto, Participante>().ReverseMap();
         }
     }
 }
