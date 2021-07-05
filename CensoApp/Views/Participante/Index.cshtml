@@ -1,12 +1,14 @@
 ﻿@model CensoApp.Dtos.ParticipanteCreateDto
 @{
-    ViewData["Title"] = "Bienvenidos al censo";
+    ViewData["Title"] = "Bienvenidos";
 }
 <div class="container text-center">
     <h1 class="card-title">@ViewData["Title"]</h1>
-    <h4 class="card-subtitle">Por favor ingrese sus credenciales.</h4>
-    <br />
-    <div class=" container col-4">
+    <h3 class="card-subtitle">Aplicacion para elegir participantes para el censo</h3>
+    <hr />
+    <p class="text-info"><strong>Por favor ingrese sus credenciales</strong></p>
+    <div class="container col-4">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
         <form asp-action="SaveCredential" method="post" enctype="multipart/form-data">
             <div class="form-group">
                 <select class="form-control" placeholder="Tipo de documento" asp-for="TipoCredencial">
@@ -16,7 +18,7 @@
                 <span asp-validation-for="TipoCredencial"></span>
             </div>
             <div class="form-group">
-                <input class="form-control" placeholder="Numero de credencial" type="text" asp-for="Credencial"/>
+                <input class="form-control" placeholder="Numero de credencial" type="text" asp-for="Credencial" />
             </div>
             <div class="form-group">
                 <button class="btn btn-primary btn-lg btn-block" type="submit">Siguiente</button>

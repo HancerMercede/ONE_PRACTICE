@@ -2,8 +2,9 @@
 @{
     ViewData["Title"] = "Formacion Educativa";
 }
-<div class="container">
+<div class="container  text-center col-4">
     <h1 class="card-title">@ViewData["Title"]</h1>
+    <hr />
     <form asp-action="GuardarInformacionParticipante" method="post" enctype="multipart/form-data">
         <div class="form-group">
             <select class="form-control" asp-for="NivelAcademico">
@@ -54,6 +55,7 @@
         <div class="form-group ">
             <input class="form-control" asp-for="Telefono" type="tel" placeholder="Telefono..."hidden />
         </div>
+        
         <div class="form-group">
             <button type="submit" class="btn btn-primary">Guardar y Finzalizar</button>
         </div>

@@ -2,23 +2,25 @@
 using CensoApp.Dtos;
 using CensoApp.Entities;
 using CensoApp.Persistence;
+using CensoApp.Services.Contracts;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 
 namespace CensoApp.Controllers
 {
     public class ParticipanteController : Controller
     {
-        private readonly ApplicationDbContext _context;
-        private readonly IMapper _mapper;
-        public ParticipanteController(ApplicationDbContext context, IMapper mapper)
+        private readonly IParticipanteService _participanteService;
+     
+        public ParticipanteController(IParticipanteService participanteService)
         {
-            _context = context;
-            _mapper = mapper;
+            _participanteService = participanteService;
         }
         public IActionResult Index()
         {
@@ -26,41 +28,32 @@ namespace CensoApp.Controllers
         }
         public async Task<ActionResult<List<ParticipanteDto>>> GetAll(ParticipanteDto model)
         {
-            var dbEntities = await _context.Participantes.Where(x=>x.Status==Entities.Helpers.Status.Active).ToListAsync();
-
-            var dtos = _mapper.Map<List<ParticipanteDto>>(dbEntities);
+            var dtos = await _participanteService.GetAll();
             return View(dtos);
         }
         public async Task<IActionResult> Details(int? Id) 
         {
-            var dbEntity = await _context.Participantes.FindAsync(Id);
-
             if (Id == null) { return NotFound(); }
-
-            var dto = _mapper.Map<ParticipanteDto>(dbEntity);
+            var dto = await _participanteService.Details(Id);
 
             return View(dto);
         }
         public async Task<IActionResult> Edit(int? Id)
         {
-            var dbEntity = await _context.Participantes.SingleAsync(x => x.Id == Id);
 
             if (Id == null) { return NotFound(); }
 
-            var dto = _mapper.Map<ParticipanteUpdateDto>(dbEntity);
+            var dto = await _participanteService.Edit(Id);
             return View(dto);
         }
 
         [HttpPost]
         public async Task<IActionResult> Edit(ParticipanteUpdateDto model) 
         {
-            var dbEntity = await _context.Participantes.FindAsync(model.Id);
 
             if (ModelState.IsValid) 
             {
-                _mapper.Map(model, dbEntity);
-                _context.Entry(dbEntity).State = EntityState.Modified;
-                await _context.SaveChangesAsync();
+                await _participanteService.EditAsync(model);
                 return RedirectToAction(nameof(GetAll));
             }
 
@@ -69,7 +62,11 @@ namespace CensoApp.Controllers
 
         public IActionResult DatosPersonales(ParticipanteCreateDto model)
         {
-            return View(model);
+            if (ModelState.IsValid)
+            {
+                return View(model);
+            }
+            return RedirectToAction(nameof(Index));
         }
         public IActionResult FormacionEducativa(ParticipanteCreateDto model)
         {
@@ -81,18 +78,13 @@ namespace CensoApp.Controllers
             {
                 model.Edad = calcularEdad(model);
 
-                if (model.Edad >= 18 && model.NivelAcademico == "Bachiller") { model.CargoPreasignado = "Empadronador(ra)"; }
-                else if (model.Edad >= 18 && model.NivelAcademico == "Universitario") { model.CargoPreasignado = "Supervisor(ra)"; }
-                if (model.Edad >= 18 && model.NivelAcademico == "Superior") { model.CargoPreasignado = "Coordinador(ra)"; }
+                model.CargoPreasignado = AsignarCargo(model);
 
                 model.FechaSolicitud = Convert.ToDateTime(DateTime.Now.ToShortDateString());
 
-                var dbEntity = _mapper.Map<Participante>(model);
-
                 if (ModelState.IsValid)
                 {
-                    _context.Add(dbEntity);
-                    await _context.SaveChangesAsync();
+                    await _participanteService.SaveInformation(model);
                     return RedirectToAction(nameof(Confirmation), model);
                 }
 
@@ -112,7 +104,7 @@ namespace CensoApp.Controllers
         [HttpPost]
         public async Task<IActionResult> SaveCredential(ParticipanteCreateDto model)
         {
-            var exist = await _context.Participantes.AnyAsync(x => x.Credencial == model.Credencial);
+            var exist = await _participanteService.ExistAny(model);
 
             if (exist == true)
             {
@@ -125,48 +117,54 @@ namespace CensoApp.Controllers
         [HttpPost]
         public IActionResult SaveInformation(ParticipanteCreateDto model)
         {
-            try
-            {
-                return RedirectToAction(nameof(FormacionEducativa), model);
-            }
-            catch
-            {
+                if (ModelState.IsValid) 
+                {
+                    return RedirectToAction(nameof(FormacionEducativa), model);
+                }
                 return RedirectToAction(nameof(DatosPersonales), model);
-            } 
         }
-        private int calcularEdad(ParticipanteCreateDto model)
-        {
-            var fechaActual = DateTime.Now.Year;
-            var fechaNacimiento = model.FechaNacimiento.Year;
-            int edad = Convert.ToInt32(fechaActual - fechaNacimiento);
-            return edad;
-        }
+        
 
         public IActionResult Confirmation()
         {
             return View();
         }
-
+      
         public async Task<IActionResult> Delete(int? Id)
         {
-            var dbEntity = await _context.Participantes.FindAsync(Id);
+            
             if (Id == null) { return NotFound(); }
-            var dto = _mapper.Map<ParticipanteDto>(dbEntity);
+            var dto = await _participanteService.Delete(Id);
             return View(dto);
         }
         [HttpPost]
         public async Task<IActionResult> DeleteSuccess(int?Id) 
         {
-            var dbEntity = await _context.Participantes.FindAsync(Id);
-            dbEntity.Status = Entities.Helpers.Status.DeActive;
+            
 
             if (ModelState.IsValid) 
             {
-                _context.Entry(dbEntity).State = EntityState.Modified;
-                await _context.SaveChangesAsync();
+                await _participanteService.SoftDeleteAsync(Id);
                 return RedirectToAction(nameof(GetAll));
             }
             return RedirectToAction(nameof(Delete));
         }
+        #region Methods
+        private int calcularEdad(ParticipanteCreateDto model)
+        {
+            var fechaActual = Convert.ToInt32(DateTime.Now.Year);
+            var fechaNacimiento = Convert.ToInt32(model.FechaNacimiento.Year);
+            int edad = Convert.ToInt32(fechaActual - fechaNacimiento);
+            return edad;
+        }
+        private string AsignarCargo(ParticipanteCreateDto model)
+        {
+            if (model.Edad >= 18 && model.NivelAcademico == "Bachiller") { model.CargoPreasignado = "Empadronador(ra)"; }
+            else if (model.Edad >= 18 && model.NivelAcademico == "Universitario") { model.CargoPreasignado = "Supervisor(ra)"; }
+            if (model.Edad >= 18 && model.NivelAcademico == "Superior") { model.CargoPreasignado = "Coordinador(ra)"; }
+
+            return model.CargoPreasignado;
+        }
+        #endregion
     }
 }

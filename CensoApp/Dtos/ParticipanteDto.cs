@@ -18,10 +18,12 @@ namespace CensoApp.Dtos
         [Required]
         public string Direccion { get; set; }
         [Required]
+        [Display(Name = "Fecha de nacimiento")]
         public DateTime FechaNacimiento { get; set; }
         [Required]
         public int Edad { get; set; }
         [Required]
+        [Display(Name = "Tipo de Credencial")]
         public string TipoCredencial { get; set; }
         [Required]
         public string Credencial { get; set; }
@@ -33,10 +35,13 @@ namespace CensoApp.Dtos
         public string Email { get; set; }
         public Status Status { get; set; }
         [Required]
+        [Display(Name = "Nivel academico")]
         public string NivelAcademico { get; set; }
         [Required]
+        [Display(Name = "Cargo pre-asignado")]
         public string CargoPreasignado { get; set; }
         [Required]
+        [Display(Name = "Fecha solicitud")]
         public DateTime FechaSolicitud { get; set; }
     }
 }

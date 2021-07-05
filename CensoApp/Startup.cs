@@ -1,4 +1,6 @@
 using CensoApp.Persistence;
+using CensoApp.Services;
+using CensoApp.Services.Contracts;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -9,6 +11,7 @@ using Microsoft.Extensions.Hosting;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.Threading.Tasks;
 
 namespace CensoApp
@@ -30,6 +33,7 @@ namespace CensoApp
             options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
             services.AddAutoMapper(typeof(Startup));
+            services.AddTransient<IParticipanteService, ParticipanteService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

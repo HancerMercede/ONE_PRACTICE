@@ -1,0 +1,26 @@
+﻿@model IEnumerable<CensoApp.Entities.Provincia>
+@foreach (var item in Model)
+{
+    <table>
+        <thead>
+            <tr>
+                <th>
+                    Codigo
+                </th>
+                <th>
+                    Nombre
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>
+                    @item.codigo
+                </td>
+                <td>
+                    @item.nombre
+                </td>
+            </tr>
+        </tbody>
+    </table>
+}

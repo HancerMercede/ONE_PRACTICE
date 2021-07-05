@@ -15,5 +15,6 @@ namespace CensoApp.Persistence
 
         }
         public DbSet<Participante> Participantes { get; set; }
+       
     }
 }
