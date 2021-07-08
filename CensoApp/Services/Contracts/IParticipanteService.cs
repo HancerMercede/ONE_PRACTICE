@@ -1,4 +1,5 @@
 ﻿using CensoApp.Dtos;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,5 +17,9 @@ namespace CensoApp.Services.Contracts
         Task<bool> ExistAny(ParticipanteCreateDto model);
         Task<ParticipanteDto> Delete(int? id);
         Task SoftDeleteAsync(int? id);
+        int AgeCalculation(ParticipanteCreateDto model);
+        string RolePreAsigned(ParticipanteCreateDto model);
+        Task<List<SelectListItem>> SelectProvincia();
+        Task<List<SelectListItem>> SelectMunicipio();
     }
 }

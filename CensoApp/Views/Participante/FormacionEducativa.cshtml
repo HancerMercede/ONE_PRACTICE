@@ -1,6 +1,8 @@
 ﻿@model CensoApp.Dtos.ParticipanteCreateDto
 @{
     ViewData["Title"] = "Formacion Educativa";
+     var provincias = (List<SelectListItem>)ViewBag.Provincias;
+     var municipios = (List<SelectListItem>)ViewBag.Municipios;
 }
 <div class="container  text-center col-4">
     <h1 class="card-title">@ViewData["Title"]</h1>
@@ -49,13 +51,22 @@
         <div class="form-group ">
             <input class="form-control" asp-for="Edad" type="number" hidden />
         </div>
-        <div class="form-group ">
-            <input class="form-control" asp-for="Direccion" placeholder="Direccion: Calle/Sector/Municipio..." hidden/>
-        </div>
+         <div class="form-group">
+            <label class="col-form-label" hidden>Selecciona la Provincia y su Municipio</label>
+                <select class="form-control" asp-for="Provincia" asp-items="@provincias" hidden></select>
+                <span asp-validation-for="Provincia" hidden></span>
+            </div>
+            <div class="form-group">
+                <select class="form-control" asp-for="Municipio" asp-items="@municipios" hidden ></select>
+                <span asp-validation-for="Municipio" hidden></span>
+            </div>
+             <div class="form-group">
+                <input class="form-control" asp-for="Calle" placeholder="Calle/Avenida, No.Casa" hidden/>
+                <span asp-validation-for="Calle"></span>
+            </div>
         <div class="form-group ">
             <input class="form-control" asp-for="Telefono" type="tel" placeholder="Telefono..."hidden />
         </div>
-        
         <div class="form-group">
             <button type="submit" class="btn btn-primary">Guardar y Finzalizar</button>
         </div>

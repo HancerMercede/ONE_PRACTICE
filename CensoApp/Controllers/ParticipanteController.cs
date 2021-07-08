@@ -4,6 +4,7 @@ using CensoApp.Entities;
 using CensoApp.Persistence;
 using CensoApp.Services.Contracts;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -60,27 +61,34 @@ namespace CensoApp.Controllers
             return View(model);
         }
 
-        public IActionResult DatosPersonales(ParticipanteCreateDto model)
+        public async Task<IActionResult> DatosPersonales(ParticipanteCreateDto model)
         {
+            ViewBag.Provincias = await _participanteService.SelectProvincia();
+            ViewBag.Municipios = await _participanteService.SelectMunicipio();
             if (ModelState.IsValid)
             {
                 return View(model);
             }
             return RedirectToAction(nameof(Index));
         }
-        public IActionResult FormacionEducativa(ParticipanteCreateDto model)
+
+        public async Task<IActionResult> FormacionEducativa(ParticipanteCreateDto model)
         {
+            ViewBag.Provincias = await _participanteService.SelectProvincia();
+            ViewBag.Municipios = await _participanteService.SelectMunicipio();
             return View(model);
         }
         [HttpPost]
         public async Task<ActionResult> GuardarInformacionParticipante(ParticipanteCreateDto model) {
             try
             {
-                model.Edad = calcularEdad(model);
+                model.Edad = _participanteService.AgeCalculation(model);
 
-                model.CargoPreasignado = AsignarCargo(model);
+                model.CargoPreasignado = _participanteService.RolePreAsigned(model);
 
                 model.FechaSolicitud = Convert.ToDateTime(DateTime.Now.ToShortDateString());
+                var direccion= string.Join(", ",model.Provincia, model.Municipio,model.Calle);
+                model.Direccion = direccion;
 
                 if (ModelState.IsValid)
                 {
@@ -140,8 +148,6 @@ namespace CensoApp.Controllers
         [HttpPost]
         public async Task<IActionResult> DeleteSuccess(int?Id) 
         {
-            
-
             if (ModelState.IsValid) 
             {
                 await _participanteService.SoftDeleteAsync(Id);
@@ -149,22 +155,6 @@ namespace CensoApp.Controllers
             }
             return RedirectToAction(nameof(Delete));
         }
-        #region Methods
-        private int calcularEdad(ParticipanteCreateDto model)
-        {
-            var fechaActual = Convert.ToInt32(DateTime.Now.Year);
-            var fechaNacimiento = Convert.ToInt32(model.FechaNacimiento.Year);
-            int edad = Convert.ToInt32(fechaActual - fechaNacimiento);
-            return edad;
-        }
-        private string AsignarCargo(ParticipanteCreateDto model)
-        {
-            if (model.Edad >= 18 && model.NivelAcademico == "Bachiller") { model.CargoPreasignado = "Empadronador(ra)"; }
-            else if (model.Edad >= 18 && model.NivelAcademico == "Universitario") { model.CargoPreasignado = "Supervisor(ra)"; }
-            if (model.Edad >= 18 && model.NivelAcademico == "Superior") { model.CargoPreasignado = "Coordinador(ra)"; }
 
-            return model.CargoPreasignado;
-        }
-        #endregion
     }
 }

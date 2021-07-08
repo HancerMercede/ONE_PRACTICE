@@ -2,6 +2,8 @@
 
 @{
     ViewData["Title"] = "Datos Personales";
+     var provincias = (List<SelectListItem>)ViewBag.Provincias;
+     var municipios = (List<SelectListItem>)ViewBag.Municipios;
 }
 <div class="container text-center">
     <h1 class="card-title">@ViewData["Title"]</h1>
@@ -18,11 +20,11 @@
                 <span asp-validation-for="Apellido"></span>
             </div>
             <div class="form-group">
-                <input class="form-control" asp-for="TipoCredencial" placeholder="Tipo credencial..." readonly />
+                <input class="form-control" asp-for="TipoCredencial" placeholder="Tipo credencial..." readonly hidden />
                 <span asp-validation-for="TipoCredencial"></span>
             </div>
             <div class="form-group">
-                <input class="form-control" asp-for="Credencial" placeholder="Credencial..." readonly />
+                <input class="form-control" asp-for="Credencial" placeholder="Credencial..." readonly hidden/>
                 <span asp-validation-for="Credencial"></span>
             </div>
             <div class="form-group">
@@ -38,8 +40,17 @@
                 <span id="eda"></span>
             </div>
             <div class="form-group">
-                <input class="form-control" asp-for="Direccion" placeholder="Direccion..." />
-                <span asp-validation-for="Direccion"></span>
+            <label class="col-form-label">Selecciona la Provincia y su Municipio</label>
+                <select class="form-control" asp-for="Provincia" asp-items="@provincias"></select>
+                <span asp-validation-for="Provincia"></span>
+            </div>
+            <div class="form-group">
+                <select class="form-control" asp-for="Municipio" asp-items="@municipios" ></select>
+                <span asp-validation-for="Municipio"></span>
+            </div>
+            <div class="form-group">
+                <input class="form-control" asp-for="Calle" placeholder="Calle/Avenida, No.Casa"/>
+                <span asp-validation-for="Calle"></span>
             </div>
             <div class="form-group">
                 <input class="form-control" asp-for="Telefono" type="tel" placeholder="Telefono..." />

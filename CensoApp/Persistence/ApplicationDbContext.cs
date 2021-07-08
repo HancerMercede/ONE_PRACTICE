@@ -15,6 +15,12 @@ namespace CensoApp.Persistence
 
         }
         public DbSet<Participante> Participantes { get; set; }
-       
+        public DbSet<Provincia> Provincias { get; set; }
+        public DbSet<Municipio> Municipios { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
+            base.OnModelCreating(builder);
+        }
     }
 }

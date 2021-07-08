@@ -62,7 +62,11 @@ body {
     /* Margin bottom by footer height */
     margin-bottom: 60px;
     font-family: 'Roboto Condensed', sans-serif;
-    background-color:#AED6F1;
+    background-color: #15172C;
+    color:white;
+}
+.table-hover th,td {
+    color:white;
 }
 .footer {
   position: absolute;

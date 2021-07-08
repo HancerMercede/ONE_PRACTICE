@@ -4,14 +4,16 @@ using CensoApp.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace CensoApp.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210707161646_CreateTablesForProvinciaAndMunicipio")]
+    partial class CreateTablesForProvinciaAndMunicipio
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -32,12 +34,9 @@ namespace CensoApp.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("ProvinciaId")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
 
-                    b.HasIndex("ProvinciaId");
+                    b.HasIndex("IdProvincia");
 
                     b.ToTable("Municipios");
                 });
@@ -111,10 +110,18 @@ namespace CensoApp.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<int>("IdMunicipio")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("MunicipioId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("MunicipioId");
 
                     b.ToTable("Provincias");
                 });
@@ -123,9 +130,20 @@ namespace CensoApp.Migrations
                 {
                     b.HasOne("CensoApp.Entities.Provincia", "Provincia")
                         .WithMany("Municipios")
-                        .HasForeignKey("ProvinciaId");
+                        .HasForeignKey("IdProvincia")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Provincia");
+                });
+
+            modelBuilder.Entity("CensoApp.Entities.Provincia", b =>
+                {
+                    b.HasOne("CensoApp.Entities.Municipio", "Municipio")
+                        .WithMany()
+                        .HasForeignKey("MunicipioId");
+
+                    b.Navigation("Municipio");
                 });
 
             modelBuilder.Entity("CensoApp.Entities.Provincia", b =>
