@@ -2,13 +2,14 @@
 @{
     ViewData["Title"] = "Bienvenidos";
 }
-<div class="container text-center">
+<div class="container-flex text-center">
     <h1 class="card-title">@ViewData["Title"]</h1>
     <h3 class="card-subtitle">Aplicacion para elegir participantes para el censo</h3>
     <hr />
     <p class="text-info"><strong>Por favor ingrese sus credenciales</strong></p>
-    <div class="container col-4">
+    <div class="container-flex col-4">
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        
         <form asp-action="SaveCredential" method="post" enctype="multipart/form-data">
             <div class="form-group">
                 <select class="form-control" placeholder="Tipo de documento" asp-for="TipoCredencial">
@@ -24,6 +25,7 @@
                 <button class="btn btn-primary btn-lg btn-block" type="submit">Siguiente</button>
             </div>
         </form>
+
     </div>
 </div>
 

@@ -4,14 +4,16 @@ using CensoApp.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace CensoApp.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230120232048_LogitudDeFechaSolicitud10")]
+    partial class LogitudDeFechaSolicitud10
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -73,7 +75,7 @@ namespace CensoApp.Migrations
 
                     b.Property<DateTime>("FechaSolicitud")
                         .HasMaxLength(10)
-                        .HasColumnType("date");
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("NivelAcademico")
                         .IsRequired()

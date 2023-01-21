@@ -42,6 +42,6 @@ namespace CensoApp.Dtos
         public string CargoPreasignado { get; set; }
         [Required]
         [Display(Name = "Fecha solicitud")]
-        public DateTime FechaSolicitud { get; set; }
+        public DateOnly FechaSolicitud { get; set; }
     }
 }

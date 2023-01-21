@@ -1,0 +1,12 @@
+﻿global using AutoMapper;
+global using CensoApp.Dtos;
+global using CensoApp.Entities;
+global using CensoApp.Persistence;
+global using CensoApp.Services.Contracts;
+global using Microsoft.AspNetCore.Mvc.Rendering;
+global using Microsoft.EntityFrameworkCore;
+global using Microsoft.Extensions.Logging;
+global using System;
+global using System.Collections.Generic;
+global using System.Linq;
+global using System.Threading.Tasks;
